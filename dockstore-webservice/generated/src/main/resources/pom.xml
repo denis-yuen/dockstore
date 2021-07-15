@@ -930,7 +930,7 @@
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-s3</artifactId>
-      <version>1.11.86</version>
+      <version>1.11.678</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

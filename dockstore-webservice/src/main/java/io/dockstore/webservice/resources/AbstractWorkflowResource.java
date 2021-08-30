@@ -475,7 +475,9 @@ public abstract class AbstractWorkflowResource<T extends Workflow> implements So
                 }
             }
         } catch (ClassCastException ex) {
-            throw new CustomWebApplicationException("Could not parse workflow array from YML.", LAMBDA_FAILURE);
+            final String message = "Could not parse workflow array from YML.";
+            LOG.error(message, ex);
+            throw new CustomWebApplicationException(message, LAMBDA_FAILURE);
         }
     }
 
@@ -632,7 +634,9 @@ public abstract class AbstractWorkflowResource<T extends Workflow> implements So
 
             LOG.info("Version " + remoteWorkflowVersion.getName() + " has been added to workflow " + workflow.getWorkflowPath() + ".");
         } catch (IOException ex) {
-            throw new CustomWebApplicationException("Cannot retrieve the workflow reference from GitHub, ensure that " + gitReference + " is a valid tag.", LAMBDA_FAILURE);
+            final String message = "Cannot retrieve the workflow reference from GitHub, ensure that " + gitReference + " is a valid tag.";
+            LOG.error(message, ex);
+            throw new CustomWebApplicationException(message, LAMBDA_FAILURE);
         }
         Instant endTime = Instant.now();
         long timeElasped = Duration.between(startTime, endTime).toSeconds();

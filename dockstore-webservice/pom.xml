@@ -498,35 +498,17 @@
         <!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <!-- note: this brings in a version of jaxb-api that breaks
-            liquibase https://liquibase.jira.com/browse/CORE-3262
-            -->
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.xml.bind</groupId>
-                    <artifactId>jaxb-api</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>swagger-annotations-jakarta</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-jaxrs2 -->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
-            <artifactId>swagger-jaxrs2</artifactId>
-            <!-- note: this brings in a version of jaxb-api that breaks
-            liquibase https://liquibase.jira.com/browse/CORE-3262
-            -->
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.xml.bind</groupId>
-                    <artifactId>jaxb-api</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>swagger-jaxrs2-jakarta</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-jaxrs2-servlet-initializer -->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
-            <artifactId>swagger-jaxrs2-servlet-initializer</artifactId>
+            <artifactId>swagger-jaxrs2-servlet-initializer-jakarta</artifactId>
         </dependency>
 
         <dependency>
@@ -567,8 +549,8 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.jaxrs</groupId>
-            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <groupId>com.fasterxml.jackson.jakarta.rs</groupId>
+            <artifactId>jackson-jakarta-rs-json-provider</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.oauth-client</groupId>
@@ -966,16 +948,7 @@
         </dependency>
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
-            <artifactId>swagger-integration</artifactId>
-            <!-- note: this brings in a version of jaxb-api that breaks
-           liquibase https://liquibase.jira.com/browse/CORE-3262
-           -->
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.xml.bind</groupId>
-                    <artifactId>jaxb-api</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>swagger-integration-jakarta</artifactId>
         </dependency>
         <dependency>
             <groupId>org.pf4j</groupId>
@@ -1258,7 +1231,7 @@
             <!-- replaces com.github.kongchen:swagger-maven-plugin for OpenAPI 3.0 -->
             <plugin>
                 <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-maven-plugin</artifactId>
+                <artifactId>swagger-maven-plugin-jakarta</artifactId>
                 <version>${openapi-annotations-version}</version>
                 <configuration>
                     <outputFileName>openapi</outputFileName>
@@ -1334,7 +1307,7 @@
                     <language>jaxrs-jersey</language>
                     <configOptions>
                         <dateLibrary>legacy</dateLibrary>
-                        <java8>true</java8>
+                        <java11>true</java11>
                         <useRuntimeException>true</useRuntimeException>
                         <modelPackage>io.openapi.model</modelPackage>
                         <apiPackage>io.openapi.api</apiPackage>

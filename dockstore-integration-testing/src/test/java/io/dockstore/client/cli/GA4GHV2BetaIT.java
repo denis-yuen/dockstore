@@ -29,8 +29,8 @@ import io.swagger.client.model.ToolClass;
 import io.swagger.client.model.ToolFile;
 import io.swagger.client.model.ToolVersion;
 import java.util.List;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
 import org.apache.http.HttpStatus;
 import org.junit.Test;
 

@@ -393,7 +393,7 @@
                 <plugin>
                     <groupId>io.swagger.codegen.v3</groupId>
                     <artifactId>swagger-codegen-maven-plugin</artifactId>
-                    <version>3.0.27</version>
+                    <version>3.0.30</version>
                 </plugin>
                 <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin -->
                 <plugin>
@@ -500,6 +500,7 @@
                                         <exclude>javax.annotation:javax.annotation-api</exclude>
                                         <exclude>javax.activation:activation</exclude>
                                         <exclude>javax.ws.rs:javax.ws.rs-api</exclude>
+                                        <exclude>io.swagger.core.v3:swagger-jaxrs2</exclude>
                                         <!-- Replaced with jakarta.activation:jakarta.activation-api -->
                                         <exclude>javax.activation:javax.activation-api</exclude>
                                         <!-- Replaced with jakarta.servlet:jakarta.servlet-api -->

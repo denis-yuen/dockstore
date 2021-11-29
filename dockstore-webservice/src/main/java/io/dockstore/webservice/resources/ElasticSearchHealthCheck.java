@@ -3,7 +3,7 @@ package io.dockstore.webservice.resources;
 import com.codahale.metrics.health.HealthCheck;
 import io.dockstore.webservice.CustomWebApplicationException;
 import io.dockstore.webservice.resources.proposedGA4GH.ToolsExtendedApi;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -12,7 +12,7 @@ import io.swagger.client.api.CurationApi;
 import io.swagger.client.model.Notification;
 import java.io.IOException;
 import java.util.List;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;

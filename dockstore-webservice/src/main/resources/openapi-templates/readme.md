@@ -8,6 +8,7 @@ Changes include:
 * overriding of path
 * override tags to GA4GHV20
 * adding @JsonValue annotation to modelEnum
+* override javax to jakarta in jacksonJsonProvider
 
 Using https://github.com/swagger-api/swagger-codegen-generators/tree/v1.0.16/src/main/resources/handlebars/JavaJaxRS
 Updated selected templates to

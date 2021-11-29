@@ -16,9 +16,9 @@
 package io.dockstore.common.yaml;
 
 import io.dockstore.common.DescriptorLanguage;
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.constraints.NotNull;
 
 /**
  * A workflow as described in a .dockstore.yml

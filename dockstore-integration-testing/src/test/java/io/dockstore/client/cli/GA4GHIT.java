@@ -34,7 +34,7 @@ import io.dropwizard.testing.DropwizardTestSupport;
 import io.swagger.model.Error;
 import java.util.Map;
 import java.util.Set;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import org.apache.http.HttpStatus;
 import org.glassfish.jersey.client.ClientProperties;
 import org.junit.AfterClass;

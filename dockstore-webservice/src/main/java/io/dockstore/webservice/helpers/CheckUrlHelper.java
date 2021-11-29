@@ -16,6 +16,7 @@
 
 package io.dockstore.webservice.helpers;
 
+import jakarta.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.ProxySelector;
@@ -33,7 +34,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.ws.rs.core.UriBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;

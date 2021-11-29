@@ -15,8 +15,8 @@
  */
 package io.dockstore.common.yaml;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 /**
  * Validates that a DockstoreYaml12 instance has at least one workflow or at least one service

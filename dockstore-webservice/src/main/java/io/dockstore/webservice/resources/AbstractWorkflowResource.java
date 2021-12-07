@@ -816,16 +816,10 @@ public abstract class AbstractWorkflowResource<T extends Workflow> implements So
         }
 
         if (publish) {
-            boolean validTag = false;
-            Set<WorkflowVersion> versions = workflow.getWorkflowVersions();
-            for (WorkflowVersion workflowVersion : versions) {
-                if (workflowVersion.isValid()) {
-                    validTag = true;
-                    break;
-                }
-            }
+            WorkflowVersion defaultVersion = workflow.getActualDefaultVersion();
+            boolean hasValidDefaultVersion = defaultVersion != null && defaultVersion.isValid();
 
-            if (validTag && (!workflow.getGitUrl().isEmpty() || Objects.equals(workflow.getMode(), WorkflowMode.HOSTED))) {
+            if (hasValidDefaultVersion && (!workflow.getGitUrl().isEmpty() || Objects.equals(workflow.getMode(), WorkflowMode.HOSTED))) {
                 workflow.setIsPublished(true);
                 if (checker != null) {
                     checker.setIsPublished(true);

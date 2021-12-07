@@ -682,15 +682,6 @@ public class DockerRepoResource
         Workflow checker = tool.getCheckerWorkflow();
 
         if (request.getPublish()) {
-            boolean validTag = false;
-
-            Set<Tag> tags = tool.getWorkflowVersions();
-            for (Tag tag : tags) {
-                if (tag.isValid()) {
-                    validTag = true;
-                    break;
-                }
-            }
 
             if (tool.isPrivateAccess()) {
                 // Check that either tool maintainer email or author email is not null
@@ -700,8 +691,11 @@ public class DockerRepoResource
                 }
             }
 
-            // Can publish a tool IF it has at least one valid tag (or is manual) and a git url
-            if (validTag && (!tool.getGitUrl().isEmpty()) || Objects.equals(tool.getMode(), ToolMode.HOSTED)) {
+            // Can publish a tool if it has a valid default tag, and has a git url or is manual.
+            Tag defaultTag = tool.getActualDefaultVersion();
+            boolean hasValidDefaultTag = defaultTag != null && defaultTag.isValid();
+
+            if (hasValidDefaultTag && (!tool.getGitUrl().isEmpty()) || Objects.equals(tool.getMode(), ToolMode.HOSTED)) {
                 tool.setIsPublished(true);
                 if (checker != null) {
                     checker.setIsPublished(true);

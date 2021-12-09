@@ -311,7 +311,7 @@ public class ElasticListener implements StateListenerInterface {
             detachedTool.setGitUrl(tool.getGitUrl());
             detachedTool.setName(tool.getName());
             detachedTool.setToolname(tool.getToolname());
-            detachedTool.setTopic(detachedTool.getTopic());
+            detachedTool.setTopicAutomatic(tool.getTopicAutomatic());
             detachedEntry = detachedTool;
         } else if (entry instanceof BioWorkflow) {
             BioWorkflow bioWorkflow = (BioWorkflow) entry;
@@ -322,7 +322,7 @@ public class ElasticListener implements StateListenerInterface {
             detachedBioWorkflow.setOrganization(bioWorkflow.getOrganization());
 
             // These are for table
-            detachedBioWorkflow.setTopic(bioWorkflow.getTopic());
+            detachedBioWorkflow.setTopicAutomatic(bioWorkflow.getTopicAutomatic());
             detachedBioWorkflow.setWorkflowName(bioWorkflow.getWorkflowName());
             detachedBioWorkflow.setRepository(bioWorkflow.getRepository());
             detachedBioWorkflow.setGitUrl(bioWorkflow.getGitUrl());

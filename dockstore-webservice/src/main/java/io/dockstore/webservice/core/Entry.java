@@ -45,6 +45,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -262,9 +263,30 @@ public abstract class Entry<S extends Entry, T extends Version> implements Compa
     @JsonIgnore
     private List<Category> categories = new ArrayList<>();
 
-    @Column()
-    @Schema(description = "Short description of the entry")
-    private String topic;
+    @Column(length = 150)
+    @Schema(description = "Short description of the entry gotten automatically")
+    private String topicAutomatic;
+
+    @Column(length = 150)
+    @Schema(description = "Short description of the entry manually updated")
+    private String topicManual;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Schema(description = "Which topic to display to the public users")
+    private TopicSelection topicSelection = TopicSelection.AUTOMATIC;
+
+    public TopicSelection getTopicSelection() {
+        return topicSelection;
+    }
+
+    public String getTopicManual() {
+        return topicManual;
+    }
+
+    public enum TopicSelection {
+        AUTOMATIC, MANUAL
+    }
 
     public Entry() {
         users = new TreeSet<>();
@@ -690,11 +712,11 @@ public abstract class Entry<S extends Entry, T extends Version> implements Compa
         this.categories = categories;
     }
 
-    public String getTopic() {
-        return topic;
+    public String getTopicAutomatic() {
+        return topicAutomatic;
     }
 
-    public void setTopic(String topic) {
-        this.topic = topic;
+    public void setTopicAutomatic(String topicAutomatic) {
+        this.topicAutomatic = topicAutomatic;
     }
 }

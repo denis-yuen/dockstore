@@ -6677,10 +6677,19 @@ definitions:
           $ref: "#/definitions/Tag"
       topic:
         type: "string"
+      topicAutomatic:
+        type: "string"
       topicId:
         type: "integer"
         format: "int64"
         description: "The Id of the corresponding topic on Dockstore Discuss"
+      topicManual:
+        type: "string"
+      topicSelection:
+        type: "string"
+        enum:
+        - "AUTOMATIC"
+        - "MANUAL"
       userIdToOrcidPutCode:
         type: "object"
         description: "The presence of the put code for a userid indicates the entry\
@@ -6923,10 +6932,19 @@ definitions:
         $ref: "#/definitions/LicenseInformation"
       topic:
         type: "string"
+      topicAutomatic:
+        type: "string"
       topicId:
         type: "integer"
         format: "int64"
         description: "The Id of the corresponding topic on Dockstore Discuss"
+      topicManual:
+        type: "string"
+      topicSelection:
+        type: "string"
+        enum:
+        - "AUTOMATIC"
+        - "MANUAL"
       userIdToOrcidPutCode:
         type: "object"
         description: "The presence of the put code for a userid indicates the entry\
@@ -8639,10 +8657,19 @@ definitions:
         $ref: "#/definitions/Entry"
       topic:
         type: "string"
+      topicAutomatic:
+        type: "string"
       topicId:
         type: "integer"
         format: "int64"
         description: "The Id of the corresponding topic on Dockstore Discuss"
+      topicManual:
+        type: "string"
+      topicSelection:
+        type: "string"
+        enum:
+        - "AUTOMATIC"
+        - "MANUAL"
       userIdToOrcidPutCode:
         type: "object"
         description: "The presence of the put code for a userid indicates the entry\

@@ -7604,10 +7604,21 @@ components:
           type: string
         topic:
           type: string
-          description: Short description of the entry
+        topicAutomatic:
+          type: string
+          description: Short description of the entry gotten automatically
         topicId:
           type: integer
           format: int64
+        topicManual:
+          type: string
+          description: Short description of the entry manually updated
+        topicSelection:
+          type: string
+          description: Which topic to display to the public users
+          enum:
+          - AUTOMATIC
+          - MANUAL
         userIdToOrcidPutCode:
           type: object
           additionalProperties:
@@ -7696,10 +7707,21 @@ components:
           uniqueItems: true
         topic:
           type: string
-          description: Short description of the entry
+        topicAutomatic:
+          type: string
+          description: Short description of the entry gotten automatically
         topicId:
           type: integer
           format: int64
+        topicManual:
+          type: string
+          description: Short description of the entry manually updated
+        topicSelection:
+          type: string
+          description: Which topic to display to the public users
+          enum:
+          - AUTOMATIC
+          - MANUAL
         userIdToOrcidPutCode:
           type: object
           additionalProperties:
@@ -7789,10 +7811,21 @@ components:
           uniqueItems: true
         topic:
           type: string
-          description: Short description of the entry
+        topicAutomatic:
+          type: string
+          description: Short description of the entry gotten automatically
         topicId:
           type: integer
           format: int64
+        topicManual:
+          type: string
+          description: Short description of the entry manually updated
+        topicSelection:
+          type: string
+          description: Which topic to display to the public users
+          enum:
+          - AUTOMATIC
+          - MANUAL
         userIdToOrcidPutCode:
           type: object
           additionalProperties:
@@ -9406,10 +9439,21 @@ components:
           uniqueItems: true
         topic:
           type: string
-          description: Short description of the entry
+        topicAutomatic:
+          type: string
+          description: Short description of the entry gotten automatically
         topicId:
           type: integer
           format: int64
+        topicManual:
+          type: string
+          description: Short description of the entry manually updated
+        topicSelection:
+          type: string
+          description: Which topic to display to the public users
+          enum:
+          - AUTOMATIC
+          - MANUAL
         type:
           type: string
         userIdToOrcidPutCode:

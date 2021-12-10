@@ -311,7 +311,6 @@ public class ElasticListener implements StateListenerInterface {
             detachedTool.setGitUrl(tool.getGitUrl());
             detachedTool.setName(tool.getName());
             detachedTool.setToolname(tool.getToolname());
-            // This is some weird hack to always use topicAutomatic for search table
             detachedTool.setTopicAutomatic(tool.getTopic());
             detachedEntry = detachedTool;
         } else if (entry instanceof BioWorkflow) {

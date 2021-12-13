@@ -34,6 +34,7 @@ import javax.persistence.criteria.Root;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
+import io.dockstore.common.DescriptorLanguage;
 import io.dockstore.webservice.core.CollectionEntry;
 import io.dockstore.webservice.core.CollectionOrganization;
 import io.dockstore.webservice.core.Entry;
@@ -41,6 +42,7 @@ import io.dockstore.webservice.core.Label;
 import io.dockstore.webservice.core.Tool;
 import io.dockstore.webservice.core.Version;
 import io.dockstore.webservice.core.Workflow;
+import io.dockstore.webservice.core.WorkflowVersion;
 import io.dockstore.webservice.core.database.EntryLite;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.hibernate.Session;
@@ -217,6 +219,21 @@ public abstract class EntryDAO<T extends Entry> extends AbstractDockstoreDAO<T> 
 
     public List<T> findAllPublished() {
         return list(this.currentSession().getNamedQuery("io.dockstore.webservice.core." + typeOfT.getSimpleName() + ".findAllPublished"));
+    }
+
+    public List<String> findAllDockstoreYamls() {
+        final Query<String> query = this.currentSession()
+                .createQuery("select s.content from SourceFile s where s.type = :type", String.class);
+        return query.setParameter("type", DescriptorLanguage.FileType.DOCKSTORE_YML).getResultList();
+    }
+
+    public List<WorkflowVersion> findAllValidCwlVersions() {
+        final Query<WorkflowVersion> query = this.currentSession()
+//                .createQuery("select v from WorkflowVersion v where v.valid=true and treat(v.parent AS Workflow).descriptorType = :dType",
+                .createQuery("select v from WorkflowVersion v where v.valid=true",
+                        WorkflowVersion.class);
+//        query.setParameter("dType", DescriptorLanguage.CWL);
+        return query.getResultList();
     }
 
     public long countAllHosted(long userid) {

@@ -60,6 +60,7 @@ import com.google.common.base.Strings;
 import io.dockstore.common.DescriptorLanguage;
 import io.dockstore.common.DescriptorLanguage.FileType;
 import io.dockstore.common.SourceControl;
+import io.dockstore.common.yaml.DockstoreYamlHelper;
 import io.dockstore.webservice.CustomWebApplicationException;
 import io.dockstore.webservice.DockstoreWebserviceConfiguration;
 import io.dockstore.webservice.api.PublishRequest;
@@ -76,6 +77,7 @@ import io.dockstore.webservice.core.Token;
 import io.dockstore.webservice.core.TokenType;
 import io.dockstore.webservice.core.Tool;
 import io.dockstore.webservice.core.User;
+import io.dockstore.webservice.core.Validation;
 import io.dockstore.webservice.core.Version;
 import io.dockstore.webservice.core.Workflow;
 import io.dockstore.webservice.core.WorkflowMode;
@@ -98,6 +100,7 @@ import io.dockstore.webservice.jdbi.ServiceEntryDAO;
 import io.dockstore.webservice.jdbi.ToolDAO;
 import io.dockstore.webservice.jdbi.VersionDAO;
 import io.dockstore.webservice.jdbi.WorkflowDAO;
+import io.dockstore.webservice.languages.CWLHandler;
 import io.dockstore.webservice.languages.LanguageHandlerFactory;
 import io.dockstore.webservice.languages.LanguageHandlerInterface;
 import io.dockstore.webservice.permissions.Permission;
@@ -1366,6 +1369,41 @@ public class WorkflowResource extends AbstractWorkflowResource<Workflow>
             return dagJson;
         }
         return null;
+    }
+
+    @GET
+    @UnitOfWork()
+    @Timed
+    @Path("/test")
+    public void testDockstoreYamls() {
+        final CWLHandler cwlHandler = new CWLHandler();
+        final List<WorkflowVersion> allValidVersions = this.workflowDAO.findAllValidCwlVersions();
+        allValidVersions.stream().filter(v -> v.getWorkflowPath().endsWith(".cwl"))
+                .forEach(v -> {
+                    final Optional<SourceFile> cwl = v.getSourceFiles().stream().filter(s -> s.getPath().equals(v.getWorkflowPath()))
+                            .findFirst();
+                    cwl.ifPresent(f -> {
+                        final SortedSet<Validation> preValidations = v.getValidations();
+                        cwlHandler.parseWorkflowContent(v.getWorkflowPath(), f.getContent(), v.getSourceFiles(), v);
+                        final SortedSet<Validation> postValidations = v.getValidations();
+                        if (!preValidations.equals(postValidations)) {
+                            System.out.println("Uh-oh");
+                        }
+                    });
+                    System.out.println("Found primary: " + cwl.isPresent());
+                });
+        final List<String> allDockstoreYamls = this.workflowDAO.findAllDockstoreYamls();
+        allDockstoreYamls.forEach(yaml -> {
+            try {
+                DockstoreYamlHelper.readAsDockstoreYaml12(yaml);
+            } catch (DockstoreYamlHelper.DockstoreYamlException e) {
+                try {
+                    DockstoreYamlHelper.readDockstoreYaml10(yaml);
+                } catch (DockstoreYamlHelper.DockstoreYamlException ex) {
+                    LOG.error("hmm", ex);
+                }
+            }
+        });
     }
 
     /**

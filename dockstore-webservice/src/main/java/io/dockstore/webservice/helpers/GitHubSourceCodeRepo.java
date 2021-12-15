@@ -62,6 +62,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -87,7 +88,6 @@ import org.kohsuke.github.GHMyself;
 import org.kohsuke.github.GHRateLimit;
 import org.kohsuke.github.GHRef;
 import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GHTagObject;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
@@ -139,7 +139,7 @@ public class GitHubSourceCodeRepo extends SourceCodeRepoInterface {
     public String getTopic(String repositoryId) {
         try {
             GHRepository repository = github.getRepository(repositoryId);
-            return repository.getDescription();
+            return repository.getDescription(); // Could be null if the repository doesn't have a description
         } catch (IOException e) {
             LOG.error(String.format("Could not get topic from: %s", repositoryId, e));
             return null;
@@ -567,20 +567,20 @@ public class GitHubSourceCodeRepo extends SourceCodeRepoInterface {
     // The documentation doesn't list the possibilities https://github-api.kohsuke.org/apidocs/org/kohsuke/github/GHRef.GHObject.html#getType(),
     // but I'll assume it mirrors the 4 Git types: blobs, trees, commits, and tags.
     private String getCommitSHA(GHRef ref, GHRepository repository, String refName) throws IOException {
-        String sha = null;
-        if ("commit".equals(ref.getObject().getType())) {
+        String sha;
+        String type = ref.getObject().getType();
+        if ("commit".equals(type)) {
             sha = ref.getObject().getSha();
-        } else if (ref.getObject().getType().equals("tag")) {
-            GHTagObject tagObject = repository.getTagObject(sha);
-            sha = tagObject.getObject().getSha();
-        } else if (ref.getObject().getType().equals("branch")) {
+        } else if ("tag".equals(type)) {
+            sha = repository.getTagObject(ref.getObject().getSha()).getObject().getSha();
+        } else if ("branch".equals(type)) {
             GHBranch branch = repository.getBranch(refName);
             sha = branch.getSHA1();
         } else {
             // I'm not sure when this would happen.
-            LOG.error("Unsupported GitHub reference object. Unable to find commit ID for type: " + ref.getObject().getType());
-            // This is probably wrong, but we should mimic the behaviour from before since this is a hotfix.
+            // Keeping the sha as-is is probably wrong, but we should mimic the behaviour from before since this is a hotfix.
             sha = ref.getObject().getSha();
+            LOG.error("Unsupported GitHub reference object. Unable to find commit ID for type: " + ref.getObject().getType());
         }
         return sha;
     }
@@ -1128,6 +1128,47 @@ public class GitHubSourceCodeRepo extends SourceCodeRepoInterface {
             LOG.info(msg, ex);
             throw new CustomWebApplicationException(msg, HttpStatus.SC_NOT_FOUND);
         }
+    }
+
+    /**
+     * DO NOT USE THIS FUNCTION ELSEWHERE.
+     * This function is for gathering topics for existing entries and only needs to be run once.
+     * @param entries A list of entries to set the topic for
+     * @return The number of entries that did not have their topics updated because of a failure in retrieving their topics from GitHub
+     */
+    public int syncTopics(List<Entry> entries) {
+        GHRateLimit startRateLimit = getGhRateLimitQuietly();
+        Map<String, String> repositoryIdToTopic = new HashMap<>();
+        Set<String> erroredRepositories = new HashSet<>();
+        int numOfEntriesNotUpdatedWithTopic = 0;
+
+        for (Entry entry : entries) {
+            String repositoryId = getRepositoryId(entry);
+            String topic = null;
+            
+            // Keep track of repos that we failed to get to prevent future requests for these repos
+            if (erroredRepositories.contains(repositoryId)) {
+                numOfEntriesNotUpdatedWithTopic += 1;
+            } else if (repositoryIdToTopic.containsKey(repositoryId)) {
+                topic = repositoryIdToTopic.get(repositoryId);
+            } else {
+                try {
+                    GHRepository repository = github.getRepository(repositoryId);
+                    topic = repository.getDescription();
+                    repositoryIdToTopic.put(repositoryId, topic);
+                } catch (IOException e) {
+                    LOG.info(String.format("Could not get topic from: %s", repositoryId), e);
+                    erroredRepositories.add(repositoryId);
+                    numOfEntriesNotUpdatedWithTopic += 1;
+                }
+            }
+            entry.setTopic(topic);
+        }
+
+        GHRateLimit endRateLimit = getGhRateLimitQuietly();
+        reportOnRateLimit("syncTopics", startRateLimit, endRateLimit);
+
+        return numOfEntriesNotUpdatedWithTopic;
     }
 
     public User.Profile getProfile(final User user, final GHUser ghUser) throws IOException {

@@ -95,8 +95,6 @@ jobs:
       - setup_machine
       - setup_test
       - setup_postgres_docker
-      - setup_integration_test
-      - save_test_results
   integration-tests:
     executor: integration_test_exec
     environment:
